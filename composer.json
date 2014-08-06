@@ -1,0 +1,26 @@
+{
+    "name": "tiendy/api_php",
+    "type": "library",
+    "description": "Tiendy API PHP Client Library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tiendy Software",
+            "homepage": "http://www.tiendy.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.1",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-hash": "*",
+        "ext-openssl": "*",
+        "ext-simplexml": "*",
+        "ext-xmlwriter": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Tiendy": "lib"
+        }
+    }
+}
