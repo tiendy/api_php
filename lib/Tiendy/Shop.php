@@ -66,6 +66,7 @@ class Tiendy_Shop extends Tiendy
     protected $_attributes = array(
         'id'   => '',
         'name'     => '',
+        'handle' => ''
         );
 
     
