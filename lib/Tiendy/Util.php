@@ -41,6 +41,35 @@ class Tiendy_Util
 
         return 'Tiendy_' . self::$responseKeysToClassNames[$name];
     }
+    
+    
+    /**
+     * throws an exception based on the type of error
+     * @param string $statusCode HTTP status code to throw exception from
+     * @throws Tiendy_Exception multiple types depending on the error
+     *
+     */
+    public static function throwStatusCodeException($statusCode, $message=null)
+    {
+        switch($statusCode) {
+         case 401:
+            throw new Tiendy_Exception_Authentication();
+            break;
+         case 403:
+             throw new Tiendy_Exception_Authorization($message);
+            break;
+         case 404:
+             throw new Tiendy_Exception_NotFound();
+            break;
+            break;
+         case 500:
+             throw new Tiendy_Exception_ServerError();
+            break;
+         default:
+            throw new Tiendy_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
+            break;
+        }
+    }
 
     
 }

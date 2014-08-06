@@ -80,7 +80,9 @@ abstract class Tiendy
     
 }
 
+require_once('Tiendy/Exception/Configuration.php');
 require_once('Tiendy/Exception/ValidationsFailed.php');
+require_once('Tiendy/Util.php');
 
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
     throw new Tiendy_Exception('PHP version >= 5.2.1 required');

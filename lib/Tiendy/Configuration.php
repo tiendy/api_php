@@ -5,7 +5,7 @@
  *
  */
 
-class Configuration extends Tiendy
+class Tiendy_Configuration extends Tiendy
 {
 
     /**
@@ -18,6 +18,7 @@ class Configuration extends Tiendy
                     'client_secret'    => '',
                     'client_shared'     => '',
                     'shop'    => '', // prueba (prueba.mitiendy.com)
+                    'token' => ''
                    );
 
     /**
@@ -32,6 +33,7 @@ class Configuration extends Tiendy
             'client_secret'  => '',
             'client_shared' => '',
             'shop' => '',
+            'token' => ''
         );
     }
 
@@ -132,6 +134,11 @@ class Configuration extends Tiendy
     {
         return self::setOrGet(__FUNCTION__, $value);
     }
+    
+    public static function token($value = null)
+    {
+        return self::setOrGet(__FUNCTION__, $value);
+    }
     /**#@-*/
 
 
@@ -145,7 +152,11 @@ class Configuration extends Tiendy
      */
     public static function baseUrl()
     {
-        return 'https://' . self::shop() . '.mitiendy.com/admin';
+        if ('127.0.0.1' == $_SERVER['REMOTE_ADDR']){
+            return 'http://localhost/admin';
+        } else {
+            return 'https://' . self::shop() . '.mitiendy.com/admin';
+        }
     }
 
     /**
