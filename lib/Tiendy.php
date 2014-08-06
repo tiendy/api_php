@@ -6,7 +6,8 @@
  * Provides methods to child classes. This class cannot be instantiated.
  *
  */
- 
+define ('MAX_ITEMS_PER_PAGE', 250);
+define ('DEFAULT_ITEMS_PER_PAGE', 50);
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
  
 abstract class Tiendy
@@ -90,7 +91,7 @@ if (version_compare(PHP_VERSION, '5.2.1', '<')) {
 
 
 function requireDependencies() {
-    $requiredExtensions = array('xmlwriter', 'SimpleXML', 'openssl', 'dom', 'hash', 'curl');
+    $requiredExtensions = array('openssl', 'hash', 'curl');
     foreach ($requiredExtensions AS $ext) {
         if (!extension_loaded($ext)) {
             throw new Tiendy_Exception('The Tiendy API library requires the ' . $ext . ' extension.');

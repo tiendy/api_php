@@ -6,6 +6,8 @@
  */
 class Tiendy_Http
 {
+    static public $last_headers = null, $last_headers_out = null;
+    
     public static function delete($path)
     {
         $response = self::_doRequest('DELETE', $path);
@@ -31,7 +33,7 @@ class Tiendy_Http
         if($response['status'] === 200) {
             return json_decode($response['body'], true);
         } else {
-            Tiendy_Util::throwStatusCodeException($response['status']);
+            Tiendy_Util::throwStatusCodeException($response['status'], self::$last_headers_out);
         }
     }
 
@@ -65,9 +67,10 @@ class Tiendy_Http
 
     public static function _doUrlRequest($httpVerb, $url, $requestBody = null)
     {
+        $token = Tiendy_Configuration::token();
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        // curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
@@ -77,14 +80,19 @@ class Tiendy_Http
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
    		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'Content-Type: application/json',
-            'User-Agent: Tiendy PHP API Library ' . Tiendy_Version::get(),
-            'X-Tiendy-Access-Token: ' . Tiendy_Configuration::token()
-        ));
-        // curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        // curl_setopt($curl, CURLOPT_USERPWD, Tiendy_Configuration::client_id() . ':' . Tiendy_Configuration::client_secret());
+   		$headers = array(
+   		    'Accept: application/json',
+   		    'Content-Type: application/json',
+   		    'User-Agent: Tiendy PHP API Library ' . Tiendy_Version::get()
+   		);
+   		if ($token) {    
+   		    $headers[] = 'X-Tiendy-Access-Token: ' . $token;
+   		} 
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        if (!$token) {
+            curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($curl, CURLOPT_USERPWD, Tiendy_Configuration::client_id() . ':' . Tiendy_Configuration::client_secret());
+        }
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         if(!empty($requestBody)) {
@@ -93,11 +101,12 @@ class Tiendy_Http
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
-        // $sent_headers = curl_getinfo($curl, CURLINFO_HEADER_OUT);
+        list(self::$last_headers, $message_body) = preg_split("/\r\n\r\n|\n\n|\r\r/", $response, 2);
+        self::$last_headers_out = curl_getinfo($curl, CURLINFO_HEADER_OUT);
         // die ($sent_headers);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
         
-        return array('status' => $httpStatus, 'body' => $response);
+        return array('status' => $httpStatus, 'body' => $message_body);
     }
 }

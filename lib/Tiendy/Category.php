@@ -1,18 +1,18 @@
 <?php
 /**
- * Tiendy Product module
- * Creates and manages Products
+ * Tiendy Category module
+ * Creates and manages content categories
  *
  */
-class Tiendy_Product extends Tiendy
+class Tiendy_Category extends Tiendy
 {
     public static function all($parameters=array())
     {
-        $response = Tiendy_Http::get('/products.json', $parameters);
+        $response = Tiendy_Http::get('/categories.json', $parameters);
         if (isset($parameters['limit']) || isset($parameters['page'])) {
             return Tiendy_Util::extractAttributeAsArray(
-                $response['products'],
-                'product'
+                $response['categories'],
+                'category'
             );
         } else {
             $pager = array(
@@ -30,7 +30,7 @@ class Tiendy_Product extends Tiendy
                 $pageSize = DEFAULT_ITEMS_PER_PAGE;
             }
             $response["searchResults"]["pageSize"] = $pageSize;
-            $r = Tiendy_Http::get('/products/count.json');
+            $r = Tiendy_Http::get('/categories/count.json');
             $response["searchResults"]["count"] = $r['count'];
             
             return new Tiendy_ResourceCollection($response, $pager);
@@ -44,30 +44,30 @@ class Tiendy_Product extends Tiendy
         if ($limit) {
             $parameters['limit'] = isset($parameters['limit'])? $parameters['limit']:$limit;
         }
-        $response = Tiendy_Http::get('/products.json', $parameters);
+        $response = Tiendy_Http::get('/categories.json', $parameters);
         return Tiendy_Util::extractAttributeAsArray(
-            $response['products'],
-            'product'
+            $response['categories'],
+            'category'
         );
     }
 
     /**
-     * find a product by id
+     * find a category by id
      *
      * @access public
-     * @param string id product Id
-     * @return object Tiendy_Product
+     * @param string id category Id
+     * @return object Tiendy_Category
      * @throws Tiendy_Exception_NotFound
      */
     public static function find($id)
     {
         self::_validateId($id);
         try {
-            $response = Tiendy_Http::get('/products/'.$id.'.json');
-            return self::factory($response['product']);
+            $response = Tiendy_Http::get('/categories/'.$id.'.json');
+            return self::factory($response['category']);
         } catch (Tiendy_Exception_NotFound $e) {
             throw new Tiendy_Exception_NotFound(
-            'product with id ' . $id . ' not found'
+            'category with id ' . $id . ' not found'
             );
         }
 
@@ -75,14 +75,14 @@ class Tiendy_Product extends Tiendy
 
 
     /**
-     * delete a product by id
+     * delete a category by id
      *
-     * @param string $productId
+     * @param string $categoryId
      */
-    public static function delete($productId)
+    public static function delete($categoryId)
     {
-        self::_validateId($productId);
-        Tiendy_Http::delete('/products/' . $productId.'.json');
+        self::_validateId($categoryId);
+        Tiendy_Http::delete('/categories/' . $categoryId.'.json');
         return new Tiendy_Result_Successful();
     }
 
@@ -95,29 +95,17 @@ class Tiendy_Product extends Tiendy
      *
      * @ignore
      * @access protected
-     * @param array $productAttribs array of product data
+     * @param array $categoryAttribs array of category data
      * @return none
      */
-    protected function _initialize($productAttribs)
+    protected function _initialize($categoryAttribs)
     {
         // set the attributes
-        $this->_attributes = $productAttribs;
-
-        // map each address into its own object
-        /*
-        $addressArray = array();
-        if (isset($productAttribs['addresses'])) {
-
-            foreach ($productAttribs['addresses'] AS $address) {
-                $addressArray[] = Tiendy_Address::factory($address);
-            }
-        }
-        $this->_set('addresses', $addressArray);
-        */
+        $this->_attributes = $categoryAttribs;        
     }
 
     /**
-     * returns a string representation of the product
+     * returns a string representation of the category
      * @return string
      */
     public function  __toString()
@@ -127,15 +115,15 @@ class Tiendy_Product extends Tiendy
     }
 
     /**
-     * returns false if comparing object is not a Tiendy_Product,
-     * or is a Tiendy_Product with a different id
+     * returns false if comparing object is not a Tiendy_Category,
+     * or is a Tiendy_Category with a different id
      *
-     * @param object $otherProd product to compare against
+     * @param object $otherProd category to compare against
      * @return boolean
      */
     public function isEqual($otherProd)
     {
-        return !($otherProd instanceof Tiendy_Product) ? false : $this->id === $otherCust->id;
+        return !($otherProd instanceof Tiendy_Category) ? false : $this->id === $otherCust->id;
     }
 
     
@@ -144,7 +132,7 @@ class Tiendy_Product extends Tiendy
 
     /**
      * @access protected
-     * @var array registry of product data
+     * @var array registry of category data
      */
     protected $_attributes = array(
         'id'   => '',
@@ -154,21 +142,21 @@ class Tiendy_Product extends Tiendy
 
 
     /**
-     * verifies that a valid product id is being used
+     * verifies that a valid category id is being used
      * @ignore
-     * @param string product id
+     * @param string category id
      * @throws InvalidArgumentException
      */
     private static function _validateId($id = null) {
         if (empty($id)) {
            throw new InvalidArgumentException(
-                   'expected product id to be set'
+                   'expected category id to be set'
                    );
         }
         
         if (!is_integer($id)) {
             throw new InvalidArgumentException(
-                    $id . ' is an invalid product id.'
+                    $id . ' is an invalid category id.'
                     );
         }
     }
@@ -179,11 +167,11 @@ class Tiendy_Product extends Tiendy
     
 
     /**
-     *  factory method: returns an instance of Tiendy_Product
+     *  factory method: returns an instance of Tiendy_Category
      *  to the requesting method, with populated properties
      *
      * @ignore
-     * @return object instance of Tiendy_Product
+     * @return object instance of Tiendy_Category
      */
     public static function factory($attributes)
     {

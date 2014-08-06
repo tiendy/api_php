@@ -11,11 +11,8 @@ PHP version >= 5.2.1 required.
 The following PHP extensions are required:
 
 * curl
-* dom
 * hash
 * openssl
-* SimpleXML
-* xmlwriter
 
 ## Quick Start Example
 

@@ -137,6 +137,9 @@ class Tiendy_Configuration extends Tiendy
     
     public static function token($value = null)
     {
+        if (!$value && !self::$_cache['token']){
+            return null;
+        }
         return self::setOrGet(__FUNCTION__, $value);
     }
     /**#@-*/

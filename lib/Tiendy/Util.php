@@ -39,7 +39,7 @@ class Tiendy_Util
     {
         $responseKeysToClassNames = array_flip(self::$classNamesToResponseKeys);
 
-        return 'Tiendy_' . self::$responseKeysToClassNames[$name];
+        return 'Tiendy_' . $responseKeysToClassNames[$name];
     }
     
     
@@ -69,6 +69,70 @@ class Tiendy_Util
             throw new Tiendy_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
             break;
         }
+    }
+    
+    
+    /**
+     * extracts an attribute and returns an array of objects
+     *
+     * extracts the requested element from an array, and converts the contents
+     * of its child arrays to objects of type Tiendy_$attributeName, or returns
+     * an array with a single element containing the value of that array element
+     *
+     * @param array $attribArray attributes from a search response
+     * @param string $attributeName indicates which element of the passed array to extract
+     *
+     * @return array array of Tiendy_$attributeName objects, or a single element array
+     */
+    public static function extractAttributeAsArray(& $attribArray, $attributeName)
+    {
+        // get what should be an array from the passed array
+        $data = $attribArray;
+        // set up the class that will be used to convert each array element
+        $classFactory = self::buildClassName($attributeName) . '::factory';
+        if(is_array($data)):
+            // create an object from the data in each element
+            $objectArray = array_map($classFactory, $data);
+        else:
+            return array($data);
+        endif;
+
+        unset($attribArray[$attributeName]);
+        return $objectArray;
+    }
+    
+    
+    /**
+     *
+     * @param array $array associative array to implode
+     * @param string $separator (optional, defaults to =)
+     * @param string $glue (optional, defaults to ', ')
+     */
+    public static function implodeAssociativeArray($array, $separator = '=', $glue = ', ')
+    {
+        // build a new array with joined keys and values
+        $tmpArray = null;
+        foreach ($array AS $key => $value) {
+                $tmpArray[] = $key . $separator . $value;
+
+        }
+        // implode and return the new array
+        return (is_array($tmpArray)) ? implode($glue, $tmpArray) : false;
+    }
+
+    public static function attributesToString($attributes) {
+        $printableAttribs = array();
+        foreach ($attributes AS $key => $value) {
+            if (is_array($value)) {
+                $pAttrib = Tiendy_Util::attributesToString($value);
+            } else if ($value instanceof DateTime) {
+                $pAttrib = $value->format(DateTime::RFC850);
+            } else {
+                $pAttrib = $value;
+            }
+            $printableAttribs[$key] = sprintf('%s', $pAttrib);
+        }
+        return Tiendy_Util::implodeAssociativeArray($printableAttribs);
     }
 
     
