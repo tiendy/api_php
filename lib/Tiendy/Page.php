@@ -30,11 +30,17 @@ class Tiendy_Page extends Tiendy
                 $pageSize = DEFAULT_ITEMS_PER_PAGE;
             }
             $response["searchResults"]["pageSize"] = $pageSize;
-            $r = Tiendy_Http::get('/pages/count.json');
-            $response["searchResults"]["count"] = $r['count'];
+            $response["searchResults"]["count"] = self::count();
             
             return new Tiendy_ResourceCollection($response, $pager);
         }
+    }
+    
+    
+    public static function count()
+    {
+        $response = Tiendy_Http::get('/pages/count.json');
+        return $response['count'];
     }
     
     
