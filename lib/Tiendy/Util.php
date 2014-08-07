@@ -52,6 +52,10 @@ class Tiendy_Util
     public static function throwStatusCodeException($statusCode, $message=null)
     {
         switch($statusCode) {
+         case 400:
+         case 409:
+            throw new Tiendy_Exception_ValidationsFailed('Bad format');
+            break;
          case 401:
             throw new Tiendy_Exception_Authentication();
             break;
