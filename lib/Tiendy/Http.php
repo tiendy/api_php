@@ -33,7 +33,7 @@ class Tiendy_Http
         if($response['status'] === 200) {
             return json_decode($response['body'], true);
         } else {
-            Tiendy_Util::throwStatusCodeException($response['status'], self::$last_headers_out);
+            Tiendy_Util::throwStatusCodeException($response['status'], self::$last_headers_out . "\n" . $response['body']);
         }
     }
 
@@ -44,7 +44,7 @@ class Tiendy_Http
         if($responseCode === 200 || $responseCode === 201 || $responseCode === 422) {
             return json_decode($response['body'], true);
         } else {
-            Tiendy_Util::throwStatusCodeException($responseCode);
+            Tiendy_Util::throwStatusCodeException($responseCode, self::$last_headers_out . "\n" . $response['body']);
         }
     }
 

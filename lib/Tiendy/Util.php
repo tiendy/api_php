@@ -54,23 +54,23 @@ class Tiendy_Util
         switch($statusCode) {
          case 400:
          case 409:
-            throw new Tiendy_Exception_ValidationsFailed('Bad format');
+            throw new Tiendy_Exception_ValidationsFailed($message? $message:'Bad format');
             break;
          case 401:
-            throw new Tiendy_Exception_Authentication();
+            throw new Tiendy_Exception_Authentication($message);
             break;
          case 403:
              throw new Tiendy_Exception_Authorization($message);
             break;
          case 404:
-             throw new Tiendy_Exception_NotFound();
+             throw new Tiendy_Exception_NotFound($message);
             break;
             break;
          case 500:
-             throw new Tiendy_Exception_ServerError();
+             throw new Tiendy_Exception_ServerError($message);
             break;
          default:
-            throw new Tiendy_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode);
+            throw new Tiendy_Exception_Unexpected('Unexpected HTTP_RESPONSE #'.$statusCode . $message);
             break;
         }
     }

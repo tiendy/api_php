@@ -9,12 +9,12 @@ class Tiendy_Metafield extends Tiendy
     public static function all($parameters=array())
     {
         $response = Tiendy_Http::get('/metafields.json', $parameters);
-        if (isset($parameters['limit']) || isset($parameters['page'])) {
+        if (count($parameters) > 0) {
             return Tiendy_Util::extractAttributeAsArray(
                 $response['metafields'],
                 'metafield'
             );
-        } else {
+        } elseif (!$parameters) {
             $pager = array(
                         'className' => __CLASS__,
                         'classMethod' => 'fetch',
