@@ -79,6 +79,12 @@ abstract class Tiendy
         }
     }
     
+    
+    public function toArray() {
+        return $this->_attributes;
+    }
+    
+    
 }
 
 require_once('Tiendy/Exception/Configuration.php');

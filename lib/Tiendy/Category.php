@@ -159,7 +159,7 @@ class Tiendy_Category extends Tiendy
                    );
         }
         
-        if (!is_integer($id)) {
+        if (!is_numeric($id)) {
             throw new InvalidArgumentException(
                     $id . ' is an invalid category id.'
                     );

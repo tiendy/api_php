@@ -14,7 +14,7 @@ class Tiendy_Shop extends Tiendy
      * @return object Tiendy_Shop
      * @throws Tiendy_Exception_NotFound
      */
-    public static function find()
+    public static function find($placeholder = null)
     {
         try {
             $response = Tiendy_Http::get('/shop.json');

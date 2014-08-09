@@ -97,16 +97,31 @@ class Tiendy_Http
         if(!empty($requestBody)) {
             $headers[] = 'Content-Length: ' . strlen($requestBody);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $requestBody);
+            if ('PUT' == $httpVerb) {
+                $fh = fopen('php://memory', 'rw');
+                fwrite($fh, $requestBody);  
+                rewind($fh); 
+                
+                curl_setopt($curl, CURLOPT_INFILE, $fh);  
+                curl_setopt($curl, CURLOPT_INFILESIZE, strlen($requestBody));  
+                curl_setopt($curl, CURLOPT_PUT, true);
+            }
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
         list(self::$last_headers, $message_body) = preg_split("/\r\n\r\n|\n\n|\r\r/", $response, 2);
+        if (strstr(self::$last_headers, 'HTTP/1.1 100 Continue') !== false) {
+            list(self::$last_headers, $message_body) = preg_split("/\r\n\r\n|\n\n|\r\r/", $message_body, 2);
+        }
         self::$last_headers_out = curl_getinfo($curl, CURLINFO_HEADER_OUT);
-        // die ($sent_headers);
         $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+        /* if ('PUT' == $httpVerb) {
+        die ("response: \n$response\n\n\n___\n" . self::$last_headers . "\n\n___\n" . $message_body);
+        } */
         
         return array('status' => $httpStatus, 'body' => $message_body);
     }

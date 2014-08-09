@@ -224,7 +224,7 @@ class Tiendy_Metafield extends Tiendy
                    );
         }
         
-        if (!is_integer($id)) {
+        if (!is_numeric($id)) {
             throw new InvalidArgumentException(
                     $id . ' is an invalid metafield id.'
                     );
@@ -245,7 +245,6 @@ class Tiendy_Metafield extends Tiendy
     private static function _doUpdate($httpVerb, $url, $params)
     {
         $response = Tiendy_Http::$httpVerb($url, $params);
-
         return self::_verifyGatewayResponse($response);
     }
 

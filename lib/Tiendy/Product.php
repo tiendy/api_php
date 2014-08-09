@@ -172,7 +172,7 @@ class Tiendy_Product extends Tiendy
                    );
         }
         
-        if (!is_integer($id)) {
+        if (!is_numeric($id)) {
             throw new InvalidArgumentException(
                     $id . ' is an invalid product id.'
                     );
