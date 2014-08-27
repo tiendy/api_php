@@ -8,7 +8,7 @@ class Tiendy_Article extends Tiendy
 {
     public static function all($parameters=array())
     {
-        $response = Tiendy_Http::get('/blogs/articles.json', $parameters);
+        $response = Tiendy_Http::get('/articles.json', $parameters);
         if (isset($parameters['limit']) || isset($parameters['page'])) {
             return Tiendy_Util::extractAttributeAsArray(
                 $response['articles'],
