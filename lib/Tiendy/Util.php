@@ -12,6 +12,7 @@ class Tiendy_Util
         'Page' => 'page',
         'Blog'    => 'blog',
         'Article' => 'article',
+        'Asset'   => 'asset',
         'Metafield' => 'metafield',
         'Webhook' => 'webhook'
     );   

@@ -53,7 +53,9 @@ class Tiendy_Result_Successful extends Tiendy_Instance
             $this->_returnObjectName = $propertyName;
 
             // create the property!
-            $this->$propertyName = $objToReturn;
+            if (!empty($propertyName)) {
+                $this->$propertyName = $objToReturn;
+            }
         }
     }
 
