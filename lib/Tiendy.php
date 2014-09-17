@@ -10,7 +10,7 @@ define ('MAX_ITEMS_PER_PAGE', 250);
 define ('DEFAULT_ITEMS_PER_PAGE', 50);
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
  
-abstract class Tiendy
+abstract class Tiendy extends ArrayAccess
 {
     /**
      * @ignore
@@ -57,9 +57,25 @@ abstract class Tiendy
         return array_key_exists($name, $this->_attributes);
     }
 
-    public function _set($key, $value)
+    public function __set($key, $value)
     {
         $this->_attributes[$key] = $value;
+    }
+    
+    /** arrayaccess */
+    public function offsetExists ($offset) {
+        return array_key_exists($offset, $this->_attributes);
+    }
+    public function offsetGet ($offset) {
+        return $this->__get($offset);
+    }
+    public function offsetSet ($offset , $value) {
+        $this->__set($offset, $value);
+    }
+    public function offsetUnset ($offset) {
+        if (array_key_exists($offset, $this->_attributes)) {
+            unset($this->_attributes[$offset]);
+        }
     }
 
     /**
