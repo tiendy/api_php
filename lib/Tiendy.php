@@ -10,7 +10,7 @@ define ('MAX_ITEMS_PER_PAGE', 250);
 define ('DEFAULT_ITEMS_PER_PAGE', 50);
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__)));
  
-class Tiendy extends ArrayAccess
+abstract class Tiendy implements ArrayAccess
 {
     /**
      * @ignore
