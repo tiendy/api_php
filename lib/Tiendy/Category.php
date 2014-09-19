@@ -64,11 +64,11 @@ class Tiendy_Category extends Tiendy
      * @return object Tiendy_Category
      * @throws Tiendy_Exception_NotFound
      */
-    public static function find($id)
+    public static function find($id, $parameters=null)
     {
         self::_validateId($id);
         try {
-            $response = Tiendy_Http::get('/categories/'.$id.'.json');
+            $response = Tiendy_Http::get('/categories/'.$id.'.json', $parameters);
             return self::factory($response['category']);
         } catch (Tiendy_Exception_NotFound $e) {
             throw new Tiendy_Exception_NotFound(
