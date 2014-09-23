@@ -73,7 +73,7 @@ class Tiendy_Product extends Tiendy
             return self::factory($response['product']);
         } catch (Tiendy_Exception_NotFound $e) {
             throw new Tiendy_Exception_NotFound(
-            'product with id ' . $id . ' not found'
+            'product with id ' . $id . ' not found (' . $e->getMessage() . ')'
             );
         }
 
