@@ -77,6 +77,31 @@ class Tiendy_Category extends Tiendy
         }
 
     }
+    
+    
+    /**
+     * Creates a category using the given +attributes+.
+     *
+     * <code>
+     *   $result = Tiendy_Category::create(array(
+     *     'title' => 'Featured products',
+     *     'description' => 'The best products on the market',
+     *   ));
+     *   if($result->success) {
+     *     echo 'Created category ' . $result->category->id;
+     *   } else {
+     *     echo 'Could not create category, see result->errors';
+     *   }
+     * </code>
+     *
+     * @access public
+     * @param array $attribs
+     * @return object Result, either Successful or Error
+     */
+    public static function create($attribs = array())
+    {
+        return self::_doCreate('/categories.json', array('category' => $attribs));
+    }
 
 
     /**
