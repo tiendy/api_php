@@ -106,7 +106,7 @@ class Tiendy_Category extends Tiendy
     
     public static function addProduct($categoryId, $attribs = array())
     {
-        return self::_doCreate('/categories' . intval($categoryId) . '/products.json', $attribs);
+        return self::_doCreate('/categories/' . intval($categoryId) . '/products.json', $attribs);
     }
 
 
