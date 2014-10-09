@@ -102,6 +102,12 @@ class Tiendy_Category extends Tiendy
     {
         return self::_doCreate('/categories.json', array('category' => $attribs));
     }
+    
+    
+    public static function addProduct($categoryId, $attribs = array())
+    {
+        return self::_doCreate('/categories' . intval($categoryId) . '/products.json', $attribs);
+    }
 
 
     /**
@@ -194,6 +200,19 @@ class Tiendy_Category extends Tiendy
 
     /* private class methods */
 
+    /**
+     * sends the create request to the gateway
+     *
+     * @ignore
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public static function _doCreate($url, $params)
+    {
+        $response = Tiendy_Http::post($url, $params);
+        return self::_verifyGatewayResponse($response);
+    }
     
 
     /**
