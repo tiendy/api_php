@@ -228,5 +228,36 @@ class Tiendy_Category extends Tiendy
         $instance->_initialize($attributes);
         return $instance;
     }
+    
+    
+    /**
+     * generic method for validating incoming gateway responses
+     *
+     * creates a new Tiendy_Category object and encapsulates
+     * it inside a Tiendy_Result_Successful object, or
+     * encapsulates a Tiendy_Errors object inside a Result_Error
+     * alternatively, throws an Unexpected exception if the response is invalid.
+     *
+     * @ignore
+     * @param array $response gateway response values
+     * @return object Result_Successful or Result_Error
+     * @throws Tiendy_Exception_Unexpected
+     */
+    private static function _verifyGatewayResponse($response)
+    {
+        if (isset($response['category'])) {
+            // return a populated instance of Tiendy_Metafield
+            return new Tiendy_Result_Successful(
+                    self::factory($response['category'])
+            );
+        } else if (isset($response['apiErrorResponse'])) {
+            return new Tiendy_Result_Error($response['apiErrorResponse']);
+        } else {
+            throw new Tiendy_Exception_Unexpected(
+            "Expected metafield or apiErrorResponse"
+            );
+        }
+    }
+    
 
 }
