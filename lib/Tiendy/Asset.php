@@ -126,7 +126,13 @@ class Tiendy_Asset extends Tiendy
      */
     protected $_attributes = array(
         'id'   => '',
-        'title'     => '',
+        'content_type'     => '',
+        'url' => '',
+        'size' => '',
+        'attachment' => '',
+        'value' => '',
+        'created_at' => '',
+        'updated_at' => ''
         );
 
 
