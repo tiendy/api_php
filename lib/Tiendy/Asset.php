@@ -71,7 +71,7 @@ class Tiendy_Asset extends Tiendy
      */
     public static function delete($theme_id, $assetId)
     {
-        self::_validateId($assetId);
+//        self::_validateId($assetId);
         Tiendy_Http::delete("/themes/$theme_id/assets.json?id=" . $assetId);
         return new Tiendy_Result_Successful();
     }
