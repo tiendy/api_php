@@ -14,7 +14,8 @@ class Tiendy_Util
         'Article' => 'article',
         'Asset'   => 'asset',
         'Metafield' => 'metafield',
-        'Webhook' => 'webhook'
+        'Webhook' => 'webhook',
+        'Redirect' => 'redirect'
     );   
 
     /**
