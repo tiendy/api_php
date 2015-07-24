@@ -18,25 +18,30 @@ The following PHP extensions are required:
 
 ```php
 <?php
-
 require_once 'PATH_TO_TIENDY/lib/Tiendy.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Configuration.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Exception.php';
+require_once('PATH_TO_TIENDY/lib/Tiendy/Exception/ValidationsFailed.php');
+require_once('PATH_TO_TIENDY/lib/Tiendy/Exception/Authentication.php');
+require_once('PATH_TO_TIENDY/lib/Tiendy/Util.php');
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Instance.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/ResourceCollection.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Order.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Product.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Http.php';
+require_once 'PATH_TO_TIENDY/lib/Tiendy/Version.php';
 
 Tiendy_Configuration::client_id('testclient');
 Tiendy_Configuration::client_secret('testsecret');
-Tiendy_Configuration::client_shared('your_public_key');
 Tiendy_Configuration::shop('prueba'); // from: prueba.mitiendy.com
-
-$result = Tiendy_Product::all(array('limit' => 50, 'page' => 2));
-
-if ($result->success) {
-    print_r("success!: " . $result->products[0]->title);
-} else if ($result->errors) {
-    print_r("Error processing API Call");
+$result = Tiendy_Product::all();
+if ($result) {
+    foreach ($result as $product) {
+        echo $product['title'] . "\n";
+    }
 } else {
-    print_r("Validation errors: \n");
+    print_r("Error processing API Call");
 }
-
-?>
 ```
 
 
