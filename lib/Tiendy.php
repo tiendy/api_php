@@ -37,7 +37,7 @@ abstract class Tiendy implements ArrayAccess
      */
     public function __get($name)
     {
-        if (array_key_exists($name, $this->_attributes)) {
+        if ($this->_attributes and array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         }
         else {
