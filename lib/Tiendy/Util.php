@@ -9,6 +9,7 @@ class Tiendy_Util
     static public $classNamesToResponseKeys = array(
         'Product' => 'product',
         'Category' => 'category',
+        'Order'    => 'order',
         'Page' => 'page',
         'Blog'    => 'blog',
         'Article' => 'article',
