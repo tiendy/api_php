@@ -155,10 +155,7 @@ class Tiendy_Configuration extends Tiendy
      */
     public static function baseUrl()
     {
-        if ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] || '192.168.' == substr($_SERVER['REMOTE_ADDR'], 0, 8)){
-            if ('ciclon' == self::shop()) {
-                return 'http://localhost.ciclon.es/admin';    
-            }
+        if (isset($_SERVER['REMOTE_ADDR']) && ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] || '192.168.' == substr($_SERVER['REMOTE_ADDR'], 0, 8))){
             return 'http://' . self::shop() . '.local/admin';
         } else {
             return 'https://' . self::shop() . '.mitiendy.com/admin';
