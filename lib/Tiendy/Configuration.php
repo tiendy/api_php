@@ -158,7 +158,7 @@ class Tiendy_Configuration extends Tiendy
         if (isset($_SERVER['REMOTE_ADDR']) && ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] || '192.168.' == substr($_SERVER['REMOTE_ADDR'], 0, 8))){
             return 'http://' . self::shop() . '.local/admin';
         } else {
-            return 'https://' . self::shop() . '.mitiendy.com/admin';
+            return 'https://' . self::shop() . '.mitiendy.es/admin';
         }
     }
 
